@@ -1,40 +1,48 @@
 import { useNavigate } from "react-router-dom";
+import { deleteWorkout } from "../../services/workoutService";
+import { getWorkouts } from "../../services/workoutService";
+import "./Workout.css";
+import { useWorkouts } from "../../services/workoutEditService";
+import { useEffect } from "react";
 
-export const Workout = ({ workout, currentUser, getAndSetWorkouts }) => {
+export const Workout = ({ workout, getAndSetWorkouts }) => {
   const navigate = useNavigate();
 
-  const handleDelete = () => {
-    getAndSetWorkouts();
+  const handleDelete = (workoutid) => {
+    deleteWorkout(workoutid).then(() => {
+      navigate(`/workouts`);
+    });
   };
 
+  useEffect(() => {
+    getAndSetWorkouts();
+  }, []);
+
+  // const handleEdit = () => {};
+
   return (
-    <section className="workout" key={workout.id}>
+    <section className="workout" key={workout}>
       <header>{workout.name}</header>
       <div>{workout.description}</div>
-      <div>
-        <button
+      <footer key={workout.id}>
+        <div>Type: {workout.type}</div>
+        <div className="btn-container" />
+        {/* <button
           className="btn btn-secondary"
           onClick={() => {
-            navigate("/workouts/create");
+            handleEdit;
           }}
         >
-          Create Workout
+          Edit
+        </button> */}
+        <button
+          className="btn btn-warning"
+          onClick={handleDelete}
+          workout={workout}
+        >
+          Delete
         </button>
-      </div>
-      <footer>
-        <div>Type: {workout.type}</div>
-        <div>Duration (mins): {workout.duration}</div>
-        <div className="btn-container">
-          {currentUser.isACoach === "true" ? (
-            <button className="btn btn-warning" onClick={handleDelete}>
-              Delete
-            </button>
-          ) : (
-            ""
-          )}
-        </div>
       </footer>
     </section>
   );
 };
-

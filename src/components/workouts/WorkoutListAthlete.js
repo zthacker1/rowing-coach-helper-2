@@ -3,13 +3,14 @@ import { getWorkouts } from "../../services/workoutService";
 import "./Workout.css";
 import { Workout } from "./Workout";
 import { useNavigate } from "react-router-dom";
+import { WorkoutAthlete } from "./WorkoutAthlete";
 
-export const WorkoutList = ({ currentUser }) => {
+export const WorkoutListAthlete = ({ currentUser }) => {
   const [workouts, setWorkouts] = useState([]);
 
   const navigate = useNavigate();
 
-  const getAndSetWorkouts = () => {
+  var getAndSetWorkouts = () => {
     getWorkouts().then((workoutsArray) => {
       setWorkouts(workoutsArray);
     });
@@ -22,21 +23,10 @@ export const WorkoutList = ({ currentUser }) => {
   return (
     <div className="workouts-container">
       <h2>All Workouts</h2>
-      <label>
-        <button
-          className="btn btn-secondary"
-          onClick={() => {
-            navigate("/workouts/create");
-          }}
-        >
-          Create New Workout
-        </button>
-      </label>
-      <div></div>
       <article className="workouts">
         {workouts.map((workout) => {
           return (
-            <Workout
+            <WorkoutAthlete
               workout={workout}
               key={workout.id}
               getAndSetWorkouts={getAndSetWorkouts}
